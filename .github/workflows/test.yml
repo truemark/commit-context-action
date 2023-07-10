@@ -1,0 +1,81 @@
+name: 'build-test'
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+      - 'releases/*'
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  build: # make sure build/ci work properly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          npm install
+          npm run all
+  test-missing: # make sure the get action works when context is missing
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get missing commit context
+        id: missing
+        uses: ./
+        with:
+          token: "${{ secrets.PERSONAL_TOKEN }}"
+      - name: Print Commit Context
+        if: ${{ steps.missing.outputs.value }} == ''
+        run: |
+          echo value ${{ steps.missing.outputs.value }}
+  test-save: # make sure the save action works
+    runs-on: ubuntu-latest
+    needs: [test-missing]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create commit context
+        id: save
+        uses: ./
+        with:
+          token: "${{ secrets.PERSONAL_TOKEN }}"
+          value: "test-tag:${{ github.run_number }}"
+      - name: Print Commit Context
+        run: |
+          echo value ${{ steps.save.outputs.value }}
+  test-get: # make sure the action works when context exists
+    runs-on: ubuntu-latest
+    needs: [test-save]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get commit context
+        id: get
+        uses: ./
+        with:
+          token: "${{ secrets.PERSONAL_TOKEN }}"
+      - name: Print Commit Context
+        run: |
+          echo value ${{ steps.get.outputs.value }}
+  test-prune: # make sure the save action prunes
+    runs-on: ubuntu-latest
+    needs: [test-get]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create commit context
+        id: prune
+        uses: ./
+        with:
+          max-entries: 0
+          token: "${{ secrets.PERSONAL_TOKEN }}"
+          value: "test-tag:${{ github.run_number }}"
+      - name: Print Commit Context
+        run: |
+          echo value ${{ steps.prune.outputs.value }}

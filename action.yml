@@ -1,0 +1,35 @@
+name: 'Commit Context Action'
+description: 'Provides a mechanism for storing and loading an image tag based on a commit SHA using Github Repository Variables'
+author: 'TrueMark'
+branding:
+  icon: 'check-circle'
+  color: 'red'
+
+inputs:
+  max-entries:
+    required: false
+    description: 'The maximum number of entries before pruning. Defaults to 20.'
+    default: '20'
+  org:
+    required: false
+    description: 'The Github organization in which the repository lives under.'
+    default: 'false'
+  repository-variable:
+    required: false
+    description: 'The name of the repository variable to store the commit context. Must start with a letter and defaults to commit_context.'
+    default: 'commit_context'
+  token:
+    required: true
+    description: 'The API or personal access token to authorize read and write access to Repository Variables. Note: secrets.GITHUB_TOKEN will not work here.'
+  value:
+    required: false
+    description: 'The commit context that should be saved for the current commit SHA. If not provided, the action will retrieve the context instead.'
+    default: ''
+
+outputs:
+  value:
+    description: 'The commit context for the current commit SHA.'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

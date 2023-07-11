@@ -7,10 +7,6 @@ on: # rebuild any PRs and main branch changes
       - master
       - 'releases/*'
 
-permissions:
-  id-token: write
-  contents: write
-
 jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
@@ -29,7 +25,7 @@ jobs:
         id: missing
         uses: ./
         with:
-          token: "${{ secrets.PERSONAL_TOKEN }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Print Commit Context
         if: ${{ steps.missing.outputs.value }} == ''
         run: |
@@ -44,7 +40,7 @@ jobs:
         id: save
         uses: ./
         with:
-          token: "${{ secrets.PERSONAL_TOKEN }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
           value: "test-tag:${{ github.run_number }}"
       - name: Print Commit Context
         run: |
@@ -59,7 +55,7 @@ jobs:
         id: get
         uses: ./
         with:
-          token: "${{ secrets.PERSONAL_TOKEN }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Print Commit Context
         run: |
           echo value ${{ steps.get.outputs.value }}
@@ -74,7 +70,7 @@ jobs:
         uses: ./
         with:
           max-entries: 0
-          token: "${{ secrets.PERSONAL_TOKEN }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
           value: "test-tag:${{ github.run_number }}"
       - name: Print Commit Context
         run: |

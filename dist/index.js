@@ -10848,16 +10848,19 @@ const repo = github_1.context.payload.repository?.name ?? '';
 const owner = github_1.context.payload.repository?.owner.login ?? '';
 const baseUrl = (0, core_1.getInput)('org') !== 'false' ? `/orgs/${owner}` : repo.includes('/') ? `/repos/${repo}` : `/repos/${owner}/${repo}`;
 const url = `${baseUrl}/actions/variables`;
-const octokit = new core_2.Octokit({ auth: (0, core_1.getInput)('token') });
+const octokit = new core_2.Octokit();
 async function run() {
     const name = (0, core_1.getInput)('repository-variable');
     // get commit context map from repository variables
+    console.log(`GET ${url}/${name}`);
     const getResponse = await octokit.request(`GET ${url}/${name}`, { owner, repo, name });
     const variableExists = getResponse.status === 200 && getResponse.data?.value;
+    console.log(variableExists);
     const contextMap = variableExists ? new Map(JSON.parse(getResponse.data.value)) : new Map();
     const value = (0, core_1.getInput)('value');
     if (!value) {
         // return commit context
+        console.log('return commit context');
         const result = contextMap.has(github_1.context.sha) ? contextMap.get(github_1.context.sha) : '';
         (0, core_1.setOutput)('value', result);
         if (result)

@@ -10848,7 +10848,7 @@ const repo = github_1.context.payload.repository?.name ?? '';
 const owner = github_1.context.payload.repository?.owner.login ?? '';
 const baseUrl = (0, core_1.getInput)('org') !== 'false' ? `/orgs/${owner}` : repo.includes('/') ? `/repos/${repo}` : `/repos/${owner}/${repo}`;
 const url = `${baseUrl}/actions/variables`;
-const octokit = new core_2.Octokit();
+const octokit = new core_2.Octokit({ auth: (0, core_1.getInput)('token') });
 async function run() {
     const name = (0, core_1.getInput)('repository-variable');
     // get commit context map from repository variables

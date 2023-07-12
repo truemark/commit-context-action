@@ -8,7 +8,7 @@ const baseUrl =
   getInput('org') !== 'false' ? `/orgs/${owner}` : repo.includes('/') ? `/repos/${repo}` : `/repos/${owner}/${repo}`
 const url = `${baseUrl}/actions/variables`
 
-const octokit = new Octokit()
+const octokit = new Octokit({auth: getInput('token')})
 
 async function run(): Promise<void> {
   const name = getInput('repository-variable')

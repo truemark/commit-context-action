@@ -25,7 +25,7 @@ jobs:
         id: missing
         uses: ./
         with:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
       - name: Print Commit Context
         if: ${{ steps.missing.outputs.value }} == ''
         run: |
@@ -40,7 +40,7 @@ jobs:
         id: save
         uses: ./
         with:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
           value: "test-tag:${{ github.run_number }}"
       - name: Print Commit Context
         run: |
@@ -55,7 +55,7 @@ jobs:
         id: get
         uses: ./
         with:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
       - name: Print Commit Context
         run: |
           echo value ${{ steps.get.outputs.value }}
@@ -70,7 +70,7 @@ jobs:
         uses: ./
         with:
           max-entries: 0
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
           value: "test-tag:${{ github.run_number }}"
       - name: Print Commit Context
         run: |

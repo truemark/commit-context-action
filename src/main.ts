@@ -14,13 +14,16 @@ async function run(): Promise<void> {
   const name = getInput('repository-variable')
 
   // get commit context map from repository variables
+  console.log(`GET ${url}/${name}`)
   const getResponse = await octokit.request(`GET ${url}/${name}`, {owner, repo, name})
   const variableExists = getResponse.status === 200 && getResponse.data?.value
+  console.log(variableExists)
   const contextMap: Map<string, string> = variableExists ? new Map(JSON.parse(getResponse.data.value)) : new Map()
 
   const value = getInput('value')
   if (!value) {
     // return commit context
+    console.log('return commit context')
     const result = contextMap.has(context.sha) ? contextMap.get(context.sha) : ''
     setOutput('value', result)
     if (result) console.log(`Successfully retrieved commit context from variable ${name}`)

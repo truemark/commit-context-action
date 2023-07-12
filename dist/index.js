@@ -10852,7 +10852,6 @@ const octokit = new core_2.Octokit({ auth: (0, core_1.getInput)('token') });
 async function run() {
     const name = (0, core_1.getInput)('repository-variable');
     // get commit context map from repository variables
-    console.log(`GET ${url}/${name}`);
     let variableExists = false;
     let contextMap = new Map();
     try {
@@ -10866,7 +10865,6 @@ async function run() {
     const value = (0, core_1.getInput)('value');
     if (!value) {
         // return commit context
-        console.log('return commit context');
         const result = contextMap.has(github_1.context.sha) ? contextMap.get(github_1.context.sha) : '';
         (0, core_1.setOutput)('value', result);
         if (result)

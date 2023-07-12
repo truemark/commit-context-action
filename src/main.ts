@@ -14,7 +14,6 @@ async function run(): Promise<void> {
   const name = getInput('repository-variable')
 
   // get commit context map from repository variables
-  console.log(`GET ${url}/${name}`)
   let variableExists = false
   let contextMap: Map<string, string> = new Map()
   try {
@@ -28,7 +27,6 @@ async function run(): Promise<void> {
   const value = getInput('value')
   if (!value) {
     // return commit context
-    console.log('return commit context')
     const result = contextMap.has(context.sha) ? contextMap.get(context.sha) : ''
     setOutput('value', result)
     if (result) console.log(`Successfully retrieved commit context from variable ${name}`)

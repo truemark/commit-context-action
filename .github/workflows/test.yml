@@ -11,7 +11,7 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           npm install
           npm run all
@@ -20,7 +20,7 @@ jobs:
     needs: [build]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get missing commit context
         id: missing
         uses: ./
@@ -35,7 +35,7 @@ jobs:
     needs: [test-missing]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create commit context
         id: save
         uses: ./
@@ -50,7 +50,7 @@ jobs:
     needs: [test-save]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get commit context
         id: get
         uses: ./
@@ -64,7 +64,7 @@ jobs:
     needs: [test-get]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create commit context
         id: prune
         uses: ./
